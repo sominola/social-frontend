@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Define a dark theme
+$dark-primary: mat.define-palette(mat.$indigo-palette);
+$dark-accent: mat.define-palette(mat.$cyan-palette);
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent,
+  )
+));
+
+@include mat.all-component-themes($dark-theme);
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+::selection {
+  color: white;
+  background: rebeccapurple;
+}
+
+.success-snackbar{
+  background: green;
+  color: white;
+  font-size: 1em;
+}
+
+.danger-snackbar{
+  background: red;
+  color: white;
+  font-size: 1em;
+}

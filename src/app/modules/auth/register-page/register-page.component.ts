@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {LoginService} from "../../../services/login.service";
 import {SnackBarService} from "../../../services/snack-bar.service";
 import {UserRegisterDto} from "../../../models/auth/user-register-dto";
+import {RegistrationService} from "../../../services/registrantion.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register-page',
@@ -17,7 +18,8 @@ export class RegisterPageComponent implements OnInit {
   public hidePass = true;
 
   constructor(
-    private loginService: LoginService,
+    private router: Router,
+    private registrationService: RegistrationService,
     private snackbarService: SnackBarService,
   ) {}
 
@@ -27,7 +29,7 @@ export class RegisterPageComponent implements OnInit {
 
   private validateForm() {
     this.registerForm = new FormGroup({
-      name: new FormControl(this.userRegisterDto.name,[
+      firstName: new FormControl(this.userRegisterDto.lastName,[
         Validators.required,
         Validators.minLength(4)
       ]),
@@ -44,11 +46,25 @@ export class RegisterPageComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(20),
       ])
-    })
+    });
   }
 
-  public signUp(_user: UserRegisterDto) {
-    console.log(_user.name)
+  public async signUp(user: UserRegisterDto) {
+    await this.registrationService.register(user).subscribe({
+      next: () => {
+        this.snackbarService.showSuccess('Success')
+        this.router.navigate(['/login'])
+      },
+      error: (error) => {
+        switch (error.status) {
+          case 409:
+            this.snackbarService.showDanger("Account already exists")
+            return;
+          default:
+            this.snackbarService.showDanger('Error, cannot create account')
+        }
+      }
+    });
   }
 
 }
