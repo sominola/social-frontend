@@ -1,0 +1,54 @@
+<div class="register-page">
+  <div class="register-wrapper">
+    <h4>Start for free</h4>
+    <h1>Create new account</h1>
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="signUp(registerForm.value)">
+      <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input type="text" matInput placeholder="Nikita" formControlName="name">
+        <mat-error *ngIf="registerForm.controls['name'].errors?.['required']">
+          Name is required
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['name'].errors?.['minlength']">
+          Name at least 4 characters without spaces
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input type="text" matInput placeholder="Savel" formControlName="lastName">
+        <mat-error *ngIf="registerForm.controls['lastName'].errors?.['required']">
+          Last Name is required
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['lastName'].errors?.['minlength']">
+          Last Name at least 4 characters without spaces
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput placeholder="User@gmail.com" formControlName="email">
+        <mat-error *ngIf="registerForm.controls['email'].errors?.['pattern']">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['email'].errors?.['required']">
+          Email is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input [type]="hidePass ? 'password' : 'text'" matInput minlength="6" placeholder="Password" formControlName="password"/>
+        <mat-icon class="password-icon" matSuffix (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
+        <mat-error *ngIf=" registerForm.controls['password'].touched && registerForm.controls['password'].errors?.['required']">
+          Password is a required
+        </mat-error>
+        <mat-error *ngIf="
+              registerForm.controls['password'].errors?.['minlength'] ||
+              registerForm.controls['password'].errors?.['maxlength'] ||
+              registerForm.controls['password'].errors?.['cannotContainSpace']">
+          Password must be, 6-20 characters without spaces
+        </mat-error>
+      </mat-form-field>
+      <button mat-button type="submit" [disabled]="!registerForm.valid">Register</button>
+    </form>
+  </div>
+  <div class="image"></div>
+</div>
