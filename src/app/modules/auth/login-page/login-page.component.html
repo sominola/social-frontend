@@ -29,7 +29,11 @@
       </mat-form-field>
 
       <button mat-button type="submit" [disabled]="!loginForm.valid">Login</button>
-
+      <div class="dont-have-account">
+        <a routerLink="/register">
+          Don't have an account? <span>Register</span>
+        </a>
+      </div>
     </form>
 
   </div>

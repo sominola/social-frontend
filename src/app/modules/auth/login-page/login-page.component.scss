@@ -65,6 +65,25 @@
       color: white;
     }
 
+    .dont-have-account{
+      margin: 0 auto;
+      a{
+        font-weight: 500;
+        font-size: 1.2em;
+        color: #E0E0E0;
+        text-decoration: none;
+
+        span{
+          color: #4C4DDC;
+        }
+      }
+
+      a:hover{
+        opacity: 0.8;
+      }
+    }
+
+
   }
 
   .image {
