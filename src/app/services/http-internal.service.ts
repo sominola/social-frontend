@@ -43,7 +43,7 @@ export class HttpInternalService {
   }
 
   public postFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
-    return this.http.post<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), observe: 'response' });
+    return this.http.post<T>(this.buildUrl(url), payload, {headers: this.getHeaders(), observe: 'response'});
   }
 
   public putRequest<T>(url: string, payload: object): Observable<T> {

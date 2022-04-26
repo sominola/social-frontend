@@ -1,14 +1,14 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {Validators, FormGroup, FormBuilder, FormControl} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {Validators, FormGroup, FormControl} from '@angular/forms';
 import { UserLoginDto } from 'src/app/models/auth/user-login-dto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from 'src/app/services/snack-bar.service';
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
 export class LoginPageComponent implements OnInit {
 
@@ -19,6 +19,7 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService:AuthService,
     private route: ActivatedRoute,
     private snackbarService: SnackBarService,
   ) {}
@@ -41,8 +42,25 @@ export class LoginPageComponent implements OnInit {
     })
   }
 
-  public signIn(_user: UserLoginDto) {
-      console.log(_user.email)
+  public async signIn(user: UserLoginDto) {
+
+    await this.authService.login(user)
+      .pipe()
+      .subscribe({
+      next:()=>{
+        this.snackbarService.showSuccess("Success");
+        this.router.navigate(['']);
+      },
+      error: response=>{
+        switch (response.status) {
+          case 403:
+            this.snackbarService.showDanger(response.error.message)
+            return;
+          default:
+            this.snackbarService.showDanger(response.error.message)
+      }
+    },
+      });
   }
 
 }

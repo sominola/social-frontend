@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SnackBarService} from "../../../services/snack-bar.service";
 import {UserRegisterDto} from "../../../models/auth/user-register-dto";
-import {RegistrationService} from "../../../services/registrantion.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-register-page',
@@ -19,7 +19,7 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private registrationService: RegistrationService,
+    private authService: AuthService,
     private snackbarService: SnackBarService,
   ) {}
 
@@ -50,12 +50,13 @@ export class RegisterPageComponent implements OnInit {
   }
 
   public async signUp(user: UserRegisterDto) {
-    await this.registrationService.register(user).subscribe({
+    await this.authService.register(user).subscribe({
       next: () => {
         this.snackbarService.showSuccess('Success')
         this.router.navigate(['/login'])
       },
       error: (error) => {
+        console.log(error)
         switch (error.status) {
           case 409:
             this.snackbarService.showDanger("Account already exists")
